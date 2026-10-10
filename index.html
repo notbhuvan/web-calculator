@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f4f1e8">
+    <title>Daily Arithmetic</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <main class="page-shell">
+        <header class="topbar">
+            <a class="wordmark" href="{{ url_for('home') }}" aria-label="Daily Arithmetic home">
+                <span class="wordmark-mark" aria-hidden="true">+</span>
+                <span>DAILY / ARITHMETIC</span>
+            </a>
+            <span class="edition">A LITTLE MATH, DONE WELL</span>
+        </header>
+
+        <section class="calculator" aria-labelledby="page-title">
+            <div class="intro">
+                <p class="eyebrow">THE EVERYDAY CALCULATOR <span>NO. 01</span></p>
+                <h1 id="page-title">Make the<br><em>numbers</em> work.</h1>
+                <p class="intro-copy">A clear space for quick calculations.</p>
+            </div>
+
+            <form class="calc-form" action="{{ url_for('home') }}" method="post">
+                <div class="field-row">
+                    <label class="field">
+                        <span>FIRST NUMBER</span>
+                        <input type="number" name="num1" step="any" inputmode="decimal"
+                               placeholder="e.g. 24" value="{{ num1|default('') }}" required>
+                    </label>
+                    <label class="field operator-field">
+                        <span>OPERATION</span>
+                        <select name="operator" aria-label="Operation">
+                            <option value="+" {% if operator|default('+') == '+' %}selected{% endif %}>＋ Add</option>
+                            <option value="-" {% if operator == '-' %}selected{% endif %}>− Subtract</option>
+                            <option value="*" {% if operator == '*' %}selected{% endif %}>× Multiply</option>
+                            <option value="/" {% if operator == '/' %}selected{% endif %}>÷ Divide</option>
+                            <option value="%" {% if operator == '%' %}selected{% endif %}>% Remainder</option>
+                        </select>
+                    </label>
+                </div>
+
+                <label class="field second-number">
+                    <span>SECOND NUMBER</span>
+                    <input type="number" name="num2" step="any" inputmode="decimal"
+                           placeholder="e.g. 8" value="{{ num2|default('') }}" required>
+                </label>
+
+                <button class="calculate-button" type="submit">
+                    <span>Calculate</span>
+                    <span class="button-arrow" aria-hidden="true">↗</span>
+                </button>
+            </form>
+
+            {% if result is defined %}
+            <div class="result-panel" role="status" aria-live="polite">
+                <span class="result-label">YOUR RESULT</span>
+                <strong>{{ result }}</strong>
+            </div>
+            {% elif error %}
+            <p class="error-message" role="alert">{{ error }}</p>
+            {% else %}
+            <p class="hint">Enter two numbers, choose an operation, and calculate.</p>
+            {% endif %}
+        </section>
+
+        <footer class="footer">
+            <span>BUILT FOR THE SMALL SUMS AND THE BIG ONES.</span>
+            <span class="footer-symbol" aria-hidden="true">× ÷ + −</span>
+        </footer>
+    </main>
+</body>
+</html>
